@@ -5,6 +5,9 @@ function Check-Command($cmdname) {
 }
 
 # -----------------------------------------------------------------------------
+# Rename-LocalUser -Name "Current Name" -NewName "New Name"
+$username = rock
+
 $computerName = Read-Host 'Enter New Computer Name'
 Write-Host "Renaming this computer to: " $computerName  -ForegroundColor Yellow
 Rename-Computer -NewName $computerName
@@ -65,7 +68,16 @@ foreach ($app in $Apps) {
 
 # TODO setup WSL2
 
-# TODO setup starship shell for WSL2 and Windows terminal
+# Install Starship shell
+choco install -y starship
+wsl curl -sS https://starship.rs/install.sh | sh
+
+# Configure
+mkdir ~/.config
+cp starship.toml ~/.config/
+
+wsl mkdir ~/.config
+wsl cp starship.toml ~/.config/
 
 # TODO add profile pic
 
