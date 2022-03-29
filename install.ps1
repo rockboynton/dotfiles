@@ -55,7 +55,7 @@ foreach ($app in $Apps) {
 
 # TODO create SSH key
 
-# TODO install fira code
+# TODO install fira code (normal and nerd font)
 
 # TODO setup VS code (extensions, setting.json)
 
@@ -64,6 +64,10 @@ foreach ($app in $Apps) {
 # TODO install WSL2
 
 # TODO setup WSL2
+
+# TODO setup starship shell for WSL2 and Windows terminal
+
+# TODO add profile pic
 
 # -----------------------------------------------------------------------------
 Write-Host ""
