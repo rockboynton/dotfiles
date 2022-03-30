@@ -52,11 +52,14 @@ foreach ($app in $Apps) {
     choco install $app -y
 }
 
+
+
 # TODOs in no particular order --------------------------------------------------------
 
 # TODO setup git
 
 # TODO create SSH key
+# follow https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 
 # TODO install fira code (normal and nerd font)
 
@@ -70,14 +73,10 @@ foreach ($app in $Apps) {
 
 # Install Starship shell
 choco install -y starship
-wsl curl -sS https://starship.rs/install.sh | sh
 
 # Configure
 mkdir ~/.config
 cp starship.toml ~/.config/
-
-wsl mkdir ~/.config
-wsl cp starship.toml ~/.config/
 
 # TODO add profile pic
 
