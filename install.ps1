@@ -45,21 +45,26 @@ $Apps = @(
     "googlechrome",
     "vlc",
     "vscode",
-    "microsoft-teams.install"
+    "microsoft-teams.install",
+    "firacodenf"
 )
 
 foreach ($app in $Apps) {
     choco install $app -y
 }
 
-
-
 # TODOs in no particular order --------------------------------------------------------
 
 # TODO setup git
 
-# TODO create SSH key
+# TODO FIXME create SSH key
 # follow https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH*'
+Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
+ssh-keygen -t rsa -b 4096 -f "C:/temp/sshkey" -q -N '""'
+
+Set-Service ssh-agent -StartupType Automatic
+ssh-add C:\Users\your-name\ssh\id_rsa
 
 # TODO install fira code (normal and nerd font)
 
