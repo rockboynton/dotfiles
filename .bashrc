@@ -44,15 +44,13 @@ if ! shopt -oq posix; then
   fi
 fi
 
-. "$HOME/.cargo/env"
+test -f "$HOME/.cargo/env" && . "$HOME/.cargo/env"
 
-eval "$(starship init bash)"
+command -v starship &> /dev/null && eval "$(starship init bash)"
 
-eval `keychain --eval --agents ssh id_id_ed25519`
+test -f ~/.ssh/id_ed25519 && eval `keychain --eval --agents ssh id_ed25519`
 
 # ? is this needed for WSL2
 if grep -q "microsoft" /proc/version &>/dev/null; then
- export DISPLAY="$(/sbin/ip route | awk '/default/ { print $3 }'
+    export DISPLAY="$(/sbin/ip route | awk '/default/ { print $3 }')"
 fi
-
-# TODO add gruvbox dircolors
