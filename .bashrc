@@ -46,11 +46,11 @@ fi
 
 test -f "$HOME/.cargo/env" && . "$HOME/.cargo/env"
 
+export SHELL_ICON=
 command -v starship &> /dev/null && eval "$(starship init bash)"
 
 test -f ~/.ssh/id_ed25519 && eval `keychain --eval --agents ssh id_ed25519`
 
-# ? is this needed for WSL2
 if grep -q "microsoft" /proc/version &>/dev/null; then
     export DISPLAY="$(/sbin/ip route | awk '/default/ { print $3 }')"
 fi
