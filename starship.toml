@@ -1,39 +1,18 @@
+format = "$username$env_var$all"
+
 [directory]
 truncate_to_repo = false
 truncation_symbol = "…/"
+format = " in [$path]($style)[$read_only]($read_only_style) "
 
 [username]
 style_user = "bold blue"
 show_always = true
+format = "[$user]($style) "
 
-# [shell]
-# bash_indicator = "\\$"
-# powershell_indicator = "❯"
-
-# [shell]
-# bash_indicator = ""
-# powershell_indicator = ""
-# style = "bold yellow"
-# disabled = false
-
-# [character.bash]
-# success_symbol = "[($shell.bash_indicator)](bold green)" # normal prompt
-# error_symbol = "[($shell.bash_indicator)](bold red)" # used if previous command failed
-
-# [character.powershell]
-# success_symbol = "[($shell.powershell_indicator)](bold green)" # normal prompt
-# error_symbol = "[($shell.powershell_indicator)](bold green)" # used if previous command failed
-
-# [character]
-# success_symbol = "[($shell.indicator)](bold green)" # normal prompt
-# error_symbol = "[($shell.indicator)](bold green)" # used if previous command failed
-
-# [character]
-# success_symbol = "[\\$](bold green)"
-# error_symbol = "[\\$](bold red)"
-
-# [status]
-# disabled = false
+[env_var.SHELL_ICON]
+symbol = "$env_value"
+style = "bold yellow"
 
 [package]
 disabled = true
