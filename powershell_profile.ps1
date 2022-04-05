@@ -4,4 +4,5 @@ if (Test-Path($ChocolateyProfile)) {
     Import-Module "$ChocolateyProfile"
 }
 
+$Env:SHELL_ICON = ''
 Invoke-Expression (&starship init powershell)
