@@ -37,11 +37,11 @@ fi
 
 # enable programmable completion features
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
 fi
 
 test -f "$HOME/.cargo/env" && . "$HOME/.cargo/env"
@@ -50,6 +50,12 @@ export SHELL_ICON=
 command -v starship &> /dev/null && eval "$(starship init bash)"
 
 test -f ~/.ssh/id_ed25519 && eval `keychain --eval --agents ssh id_ed25519`
+
+source /usr/share/doc/fzf/examples/key-bindings.bash
+source /usr/share/doc/fzf/examples/completion.bash
+
+# morhetz/gruvbox
+export FZF_DEFAULT_OPTS='--color=bg+:#3c3836,bg:#32302f,spinner:#fb4934,hl:#928374,fg:#ebdbb2,header:#928374,info:#8ec07c,pointer:#fb4934,marker:#fb4934,fg+:#ebdbb2,prompt:#fb4934,hl+:#fb4934'
 
 if grep -q "microsoft" /proc/version &>/dev/null; then
     export DISPLAY="$(/sbin/ip route | awk '/default/ { print $3 }')"
