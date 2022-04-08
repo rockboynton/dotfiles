@@ -7,6 +7,7 @@ function Check-Command($cmdname) {
 # -----------------------------------------------------------------------------
 # Rename-LocalUser -Name "Current Name" -NewName "New Name"
 $username = rock
+$github_username = rockboynton
 
 $computerName = Read-Host 'Enter New Computer Name'
 Write-Host "Renaming this computer to: " $computerName  -ForegroundColor Yellow
@@ -32,7 +33,7 @@ if (Check-Command -cmdname 'choco') {
     Write-Host ""
     Write-Host "Installing Chocolate for Windows..." -ForegroundColor Green
     Write-Host "------------------------------------" -ForegroundColor Green
-    Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 }
 
 Write-Host ""
@@ -46,16 +47,14 @@ $Apps = @(
     "vlc",
     "vscode",
     "microsoft-teams.install",
-    "firacodenf"
+    "firacodenf",
+    "microsoft-windows-terminal",
+    "starship"
 )
 
 foreach ($app in $Apps) {
     choco install $app -y
 }
-
-# TODOs in no particular order --------------------------------------------------------
-
-# TODO setup git
 
 # TODO FIXME create SSH key
 # follow https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
@@ -66,22 +65,20 @@ ssh-keygen -t rsa -b 4096 -f "C:/temp/sshkey" -q -N '""'
 Set-Service ssh-agent -StartupType Automatic
 ssh-add C:\Users\your-name\ssh\id_rsa
 
-# TODO install fira code (normal and nerd font)
-
-# TODO setup VS code (extensions, setting.json)
-
 # TODO install windows terminal (add settings.json, etc)
+New-Item -ItemType HardLink -Path "$env:LOCALAPPDATA\Microsoft\Windows Terminal\settings.json" -Target "C:\tools\windowsterminal\settings.json"
+
+# Setup dotfiles manager
+chezmoi init --apply "https://github.com/$github_username/dotfiles.git"
+# TODO configure chezmoi: https://blog.benoitj.ca/2020-06-15-how-i-use-linux-desktop-at-work-part5-dotfiles/
+
+# Configure Starship shell
+mkdir ~/.config
+cp starship.toml ~/.config/
 
 # TODO install WSL2
 
 # TODO setup WSL2
-
-# Install Starship shell
-choco install -y starship
-
-# Configure
-mkdir ~/.config
-cp starship.toml ~/.config/
 
 # TODO add profile pic
 
