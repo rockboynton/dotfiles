@@ -60,3 +60,6 @@ export FZF_DEFAULT_OPTS='--color=bg+:#3c3836,bg:#32302f,spinner:#fb4934,hl:#9283
 if grep -q "microsoft" /proc/version &>/dev/null; then
     export DISPLAY="$(/sbin/ip route | awk '/default/ { print $3 }')"
 fi
+
+# Set VS code as default editor
+export EDITOR="code --wait --new-window"
