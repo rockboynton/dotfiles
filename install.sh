@@ -3,13 +3,14 @@ email="rock.boynton@yahoo.com"
 
 sudo apt update
 sudo apt upgrade -y
+sudo apt autoremove -y
 
 # install all the things
 sudo apt install -y \
     fzf \
     bat \
     ripgrep \
-    neofetch 
+    neofetch
 
 # generate ssh key
 ssh-keygen -t ed25519 -C "$email" -f "$HOME"/.ssh/id_ed25519 -q -P
