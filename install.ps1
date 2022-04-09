@@ -1,13 +1,16 @@
-if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) { Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs; exit }
+if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()) `
+        .IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs; exit
+}
 
 function Check-Command($cmdname) {
     return [bool](Get-Command -Name $cmdname -ErrorAction SilentlyContinue)
 }
 
 # -----------------------------------------------------------------------------
-# Rename-LocalUser -Name "Current Name" -NewName "New Name"
 $username = rock
 $github_username = rockboynton
+$email_address = "rock.boynton@yahoo.com"
 
 $computerName = Read-Host 'Enter New Computer Name'
 Write-Host "Renaming this computer to: " $computerName  -ForegroundColor Yellow
@@ -24,7 +27,8 @@ Powercfg /Change standby-timeout-ac 0
 Write-Host ""
 Write-Host "Enable Windows 10 Developer Mode..." -ForegroundColor Green
 Write-Host "------------------------------------" -ForegroundColor Green
-reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" /t REG_DWORD /f /v "AllowDevelopmentWithoutDevLicense" /d "1"
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" /t REG_DWORD `
+        /f /v "AllowDevelopmentWithoutDevLicense" /d "1"
 
 # -----------------------------------------------------------------------------
 if (Check-Command -cmdname 'choco') {
@@ -33,7 +37,9 @@ if (Check-Command -cmdname 'choco') {
     Write-Host ""
     Write-Host "Installing Chocolate for Windows..." -ForegroundColor Green
     Write-Host "------------------------------------" -ForegroundColor Green
-    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol `
+        = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient) `
+        .DownloadString('https://community.chocolatey.org/install.ps1'))
 }
 
 Write-Host ""
@@ -56,14 +62,25 @@ foreach ($app in $Apps) {
     choco install $app -y
 }
 
-# TODO FIXME create SSH key
-# follow https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
-Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH*'
-Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
-ssh-keygen -t rsa -b 4096 -f "C:/temp/sshkey" -q -N '""'
+# setup SSH
+Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH*' # install OpenSSH
+Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0 # install the OpenSSH Client
+Get-Service ssh-agent | Set-Service -StartupType Automatic -PassThru | Start-Service # start SSH agent automatically
+# run the following block to use SSH server
+# Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+# Start-Service sshd # Start the sshd service
+# Set-Service -Name sshd -StartupType 'Automatic' # OPTIONAL but recommended by Microsoft
+# # Confirm the Firewall rule is configured. It should be created automatically by setup. Run the following to verify
+# if (!(Get-NetFirewallRule -Name "OpenSSH-Server-In-TCP" -ErrorAction SilentlyContinue | Select-Object Name, Enabled)) {
+#     Write-Output "Firewall Rule 'OpenSSH-Server-In-TCP' does not exist, creating it..."
+#     New-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
+# } else {
+#     Write-Output "Firewall rule 'OpenSSH-Server-In-TCP' has been created and exists."
+# }
 
-Set-Service ssh-agent -StartupType Automatic
-ssh-add C:\Users\your-name\ssh\id_rsa
+# follow https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+ssh-keygen -t ed25519 -C "$email_address" -f "~/.ssh/id_ed25519" -q -N '""'
+ssh-add ~\.ssh\id_ed25519
 
 # TODO install windows terminal (add settings.json, etc)
 New-Item -ItemType HardLink -Path "$env:LOCALAPPDATA\Microsoft\Windows Terminal\settings.json" -Target "C:\tools\windowsterminal\settings.json"
@@ -77,10 +94,8 @@ mkdir ~/.config
 cp starship.toml ~/.config/
 
 # TODO install WSL2
-
-# TODO setup WSL2
-
-# TODO add profile pic
+wsl --install
+# see install.sh for additional setup
 
 # -----------------------------------------------------------------------------
 Write-Host ""
