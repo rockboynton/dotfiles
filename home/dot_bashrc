@@ -48,6 +48,7 @@ test -f "$HOME/.cargo/env" && . "$HOME/.cargo/env"
 
 export SHELL_ICON=
 command -v starship &> /dev/null && eval "$(starship init bash)"
+export STARSHIP_CONFIG=~/starship.toml
 
 test -f ~/.ssh/id_ed25519 && eval `keychain --eval --agents ssh id_ed25519`
 
@@ -63,4 +64,4 @@ fi
 
 # Set VS code as default editor
 export EDITOR="code --wait --new-window"
-export VISUAL="$EDITOR""
+export VISUAL="$EDITOR"
