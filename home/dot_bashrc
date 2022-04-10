@@ -63,3 +63,4 @@ fi
 
 # Set VS code as default editor
 export EDITOR="code --wait --new-window"
+export VISUAL="$EDITOR""
