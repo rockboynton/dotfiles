@@ -1,4 +1,5 @@
 #!/bin/bash
+{{- if ne .chezmoi.os "windows" }}
 
 email="rock.boynton@yahoo.com"
 # TODO read username and email from input instead
@@ -27,3 +28,4 @@ curl -sS https://starship.rs/install.sh | sh -s -- -y
 if [ -f "/bin/batcat" ]; then
     sudo ln -s /bin/batcat /bin/bat
 fi
+{{ end -}}
