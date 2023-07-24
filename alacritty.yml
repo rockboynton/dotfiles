@@ -1,0 +1,87 @@
+# Configuration for Alacritty, the GPU enhanced terminal emulator.
+
+window:
+  padding:
+    x: 6
+    y: 6
+
+  decorations: full
+
+  opacity: 0.9
+
+  dynamic_title: true
+
+  dimensions:
+    lines: 40
+    columns: 120
+
+font:
+  normal:
+    family: FiraCode Nerd Font
+    style: Retina
+
+  bold:
+    family: FiraCode Nerd Font
+    style: Bold
+
+  italic:
+    family: FiraCode Nerd Font
+    style: Italic
+
+  bold_italic:
+    family: FiraCode Nerd Font
+    style: Bold Italic
+
+  size: 14.0
+
+# Gruvbox
+colors:
+  primary:
+    background: '#282828'
+    foreground: '#ebdbb2'
+    bright_foreground: '#fbf1c7'
+
+  cursor:
+    text: CellBackground
+    cursor: CellForeground
+
+  search:
+    matches:
+      foreground: '#83a598'
+      background: '#ffffff'
+    focused_match:
+      foreground: '#ffffff'
+      background: '#fe8019'
+
+  normal:
+    black:   '#3c3836'
+    red:     '#cc241d'
+    green:   '#98971a'
+    yellow:  '#d79921'
+    blue:    '#458588'
+    magenta: '#b16286'
+    cyan:    '#689d6a'
+    white:   '#a89984'
+
+  bright:
+    black:   '#928374'
+    red:     '#fb4934'
+    green:   '#b8bb26'
+    yellow:  '#fabd2f'
+    blue:    '#83a598'
+    magenta: '#d3869b'
+    cyan:    '#8ec07c'
+    white:   '#ebdbb2'
+
+bell:
+  animation: EaseOutExpo
+  duration: 200
+
+key_bindings:
+  - { key: Left,     mods: Alt,     chars: "\x1bb"                       } # Skip word left
+  - { key: Right,    mods: Alt,     chars: "\x1bf"                       } # Skip word right
+  - { key: Left,     mods: Command, chars: "\x1bOH",   mode: AppCursor   } # Home
+  - { key: Right,    mods: Command, chars: "\x1bOF",   mode: AppCursor   } # End
+  - { key: Back,     mods: Command, chars: "\x15"                        } # Delete line
+  - { key: Back,     mods: Alt,     chars: "\x1b\x7f"                    } # Delete word
+  - { key: N,        mods: Command, action: SpawnNewInstance             } # New window
